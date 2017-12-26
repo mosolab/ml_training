@@ -16,8 +16,8 @@ J = 0;
 vector = 0;
 J = 0;
 for i=1:m
-  vector = X(i, :) * theta;
-  J = J+ (vector - y(i))^2;
+  vector = X(i, :) * theta - y(i);
+  J = J + vector^2;
 end;
 
 J = J/(2*m);

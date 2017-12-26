@@ -82,19 +82,39 @@ X = [ones(m, 1) X];
 fprintf('Running gradient descent ...\n');
 
 % Choose some alpha value
-alpha = 0.01;
+alpha1 = 1;
+alpha2 = 0.3;
+alpha3 = 0.1;
+alpha4 = 0.03;
+
 num_iters = 400;
 
 % Init Theta and Run Gradient Descent 
-theta = zeros(3, 1);
-[theta, J_history] = gradientDescentMulti(X, y, theta, alpha, num_iters);
+theta1 = zeros(3, 1);
+[theta1, J_history1] = gradientDescentMulti(X, y, theta1, alpha1, num_iters);
+
+theta2 = zeros(3, 1);
+[theta2, J_history2] = gradientDescentMulti(X, y, theta2, alpha2, num_iters);
+
+theta3 = zeros(3, 1);
+[theta3, J_history3] = gradientDescentMulti(X, y, theta3, alpha3, num_iters);
+
+theta4 = zeros(3, 1);
+[theta4, J_history4] = gradientDescentMulti(X, y, theta4, alpha4, num_iters);
 
 % Plot the convergence graph
 figure;
-plot(1:numel(J_history), J_history, '-b', 'LineWidth', 2);
+plot(1:numel(J_history1), J_history1, '-b', 'LineWidth', 2);
 xlabel('Number of iterations');
 ylabel('Cost J');
 
+hold on;
+plot(1:numel(J_history2), J_history2, '-g', 'LineWidth', 2);
+plot(1:numel(J_history3), J_history3, '-r', 'LineWidth', 2);
+plot(1:numel(J_history4), J_history4, '-k', 'LineWidth', 2);
+legend('theta1 0.3', 'theta2 0.01', 'theta3 0.003', 'theta4 0.001');
+
+theta = theta1;
 % Display gradient descent's result
 fprintf('Theta computed from gradient descent: \n');
 fprintf(' %f \n', theta);
@@ -104,7 +124,9 @@ fprintf('\n');
 % ====================== YOUR CODE HERE ======================
 % Recall that the first column of X is all-ones. Thus, it does
 % not need to be normalized.
-price = 0; % You should change this
+est_input_norm = [1 (1650 - mu(1))/sigma(1) (3-mu(2))/sigma(2)];
+price = est_input_norm * theta;
+%price = 0; % You should change this
 
 
 % ============================================================
@@ -149,7 +171,8 @@ fprintf('\n');
 
 % Estimate the price of a 1650 sq-ft, 3 br house
 % ====================== YOUR CODE HERE ======================
-price = 0; % You should change this
+est_input = [1 1650 3];
+price = est_input * theta; % You should change this
 
 
 % ============================================================
