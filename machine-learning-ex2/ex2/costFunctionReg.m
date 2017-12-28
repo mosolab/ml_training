@@ -22,11 +22,8 @@ J = (1/m) * ((-y)'*log(sigmoid(X*theta)) - (1-y)'*log(1-sigmoid(X*theta))) + (la
 
 vector = (sigmoid(X*theta)-y);
 
-grad(1) = grad(1) - (1/m)*(vector)'*X(:,1);
-
-%grad(2:length(grad)) = grad(2:length(grad)) - (1/m)* ((sigmoid(X(:,2:size(X,2))*theta(2:length(theta))-y)'*X(:, 2:size(X,2)))' + (lambda/m)*theta(2:length(theta)));
-
-grad(2:length(grad)) = grad(2:length(grad)) - (1/m)*((vector'*X(:, 2:size(X,2)))' + (lambda/m)*theta(2:length(theta)));
+grad(1) = (1/m)*(vector)'*X(:,1);
+grad(2:length(grad)) = (1/m)*((vector'*X(:, 2:size(X,2)))') + (lambda/m)*theta(2:length(theta));
 % =============================================================
 
 end
