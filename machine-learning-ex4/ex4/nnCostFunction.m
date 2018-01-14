@@ -29,6 +29,8 @@ m = size(X, 1);
 J = 0;
 Theta1_grad = zeros(size(Theta1));
 Theta2_grad = zeros(size(Theta2));
+%printf('Theta1_grad size : %d %d\n', size(Theta1_grad));
+%printf('Theta2_grad size : %d %d\n', size(Theta2_grad));
 
 % ====================== YOUR CODE HERE ======================
 % Instructions: You should complete the code by working through the
@@ -64,15 +66,37 @@ Theta2_grad = zeros(size(Theta2));
 
 X = [ones(m, 1) X];
 
+
 for i = 1:m
+
+    % for forwardprop
     y_orig = zeros(1, num_labels)';
+
+    % calculate forward prop
     xi = X(i,:);
     xh = 1 ./ (1+exp(-Theta1*xi'));
     xh = [1 xh'];
     h = 1./(1+exp(-Theta2*xh'));
+
+    % calculate cost func
     y_orig(y(i)) = 1;
     J = J+((-y_orig)'*log(h) - (1-y_orig)'*log(1-h));
+
+    % calculate backprop
+    delta_3 = h - y_orig;
+
+    tmp = xh .* (1-xh);
+    delta_2 = (Theta2' * delta_3)' .* tmp;
+    delta_2 = delta_2(2:end);
+
+    tmp_delta_2 =  delta_3 * xh;
+    tmp_delta_1 =  delta_2' * xi;
+
+    Theta2_grad = Theta2_grad + tmp_delta_2;
+    Theta1_grad = Theta1_grad + tmp_delta_1;
+
 end;
+
 J = J/m;
 
 l1 = sum(Theta1(:,2:length(Theta1(1,:))).^2);
@@ -85,9 +109,10 @@ J = J + ((l1 + l2)*lambda)/(2*m);
 % -------------------------------------------------------------
 
 % =========================================================================
-
+Theta1_grad(:, 2:end) = Theta1_grad(:, 2:end) + (Theta1(:, 2:end) * lambda);
+Theta2_grad(:, 2:end) = Theta2_grad(:, 2:end) + (Theta2(:, 2:end) * lambda);
 % Unroll gradients
-grad = [Theta1_grad(:) ; Theta2_grad(:)];
+grad = [Theta1_grad(:)/m ; Theta2_grad(:)/m];
 
 
 end
